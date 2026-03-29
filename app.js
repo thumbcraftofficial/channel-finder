@@ -5,7 +5,7 @@ let selectedChannels = new Set();
 let currentSort = { column: null, direction: 'asc' };
 
 // API Configuration
-const API_BASE_URL = 'http://localhost:3000/api';
+const API_BASE_URL = 'https://channel-finder.onrender.com';
 
 // Initialize App
 document.addEventListener('DOMContentLoaded', () => {
