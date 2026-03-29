@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>thumbcraft-studio Channel Finder</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Toast Container -->
+    <div id="toast-container"></div>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay hidden">
+        <div class="loading-content">
+            <div class="spinner"></div>
+            <p>Loading channels...</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fab fa-youtube"></i>
+                    <h1>thumbcraft-studio Channel Finder</h1>
+                </div>
+                <div class="header-stats">
+                    <span id="selection-counter">Selected: 0 channels</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- API Usage Meter -->
+        <div class="api-usage-meter">
+            <div class="usage-header">
+                <h3><i class="fas fa-chart-line"></i> API Usage Meter</h3>
+                <button id="refresh-usage-btn" class="btn-icon" title="Refresh Usage">
+                    <i class="fas fa-sync-alt"></i>
+                </button>
+            </div>
+            <div class="usage-stats">
+                <div class="stat">
+                    <span class="stat-label">Used</span>
+                    <span id="quota-used" class="stat-value">0</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Remaining</span>
+                    <span id="quota-remaining" class="stat-value">10,000</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Daily Quota</span>
+                    <span class="stat-value">10,000</span>
+                </div>
+            </div>
+            <div class="progress-bar-container">
+                <div id="usage-progress-bar" class="progress-bar" data-percentage="0">
+                    <span id="usage-percentage" class="progress-text">0%</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filters Panel -->
+        <div class="filters-panel">
+            <div class="filters-header">
+                <h2><i class="fas fa-filter"></i> Filters</h2>
+                <div class="filter-actions">
+                    <button id="apply-filters-btn" class="btn btn-primary">
+                        <i class="fas fa-search"></i> Apply Filters
+                    </button>
+                    <button id="reset-filters-btn" class="btn btn-secondary">
+                        <i class="fas fa-undo"></i> Reset
+                    </button>
+                </div>
+            </div>
+
+            <div class="filters-grid">
+                <!-- Channel Name Filter -->
+                <div class="filter-group">
+                    <label for="channel-name">
+                        <i class="fas fa-user"></i> Channel Name
+                    </label>
+                    <input 
+                        type="text" 
+                        id="channel-name" 
+                        placeholder="Enter channel name or leave empty for all"
+                        class="filter-input"
+                    >
+                </div>
+
+                <!-- Country Filter -->
+                <div class="filter-group">
+                    <label for="country-select">
+                        <i class="fas fa-globe"></i> Country
+                    </label>
+                    <div class="multi-select-wrapper">
+                        <div class="multi-select-display" id="country-display">
+                            <span class="placeholder">All countries</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="multi-select-dropdown" id="country-dropdown">
+                            <div class="dropdown-search">
+                                <input type="text" id="country-search" placeholder="Search countries...">
+                            </div>
+                            <div class="dropdown-options">
+                                <label><input type="checkbox" value="US"> United States</label>
+                                <label><input type="checkbox" value="GB"> United Kingdom</label>
+                                <label><input type="checkbox" value="CA"> Canada</label>
+                                <label><input type="checkbox" value="AU"> Australia</label>
+                                <label><input type="checkbox" value="DE"> Germany</label>
+                                <label><input type="checkbox" value="FR"> France</label>
+                                <label><input type="checkbox" value="ES"> Spain</label>
+                                <label><input type="checkbox" value="IT"> Italy</label>
+                                <label><input type="checkbox" value="BR"> Brazil</label>
+                                <label><input type="checkbox" value="MX"> Mexico</label>
+                                <label><input type="checkbox" value="IN"> India</label>
+                                <label><input type="checkbox" value="JP"> Japan</label>
+                                <label><input type="checkbox" value="KR"> South Korea</label>
+                                <label><input type="checkbox" value="CN"> China</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Category Filter -->
+                <div class="filter-group">
+                    <label for="category-select">
+                        <i class="fas fa-tags"></i> Category
+                    </label>
+                    <div class="multi-select-wrapper">
+                        <div class="multi-select-display" id="category-display">
+                            <span class="placeholder">All categories</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="multi-select-dropdown" id="category-dropdown">
+                            <div class="dropdown-search">
+                                <input type="text" id="category-search" placeholder="Search or type custom category...">
+                            </div>
+                            <div class="dropdown-options">
+                                <label><input type="checkbox" value="Gaming"> Gaming</label>
+                                <label><input type="checkbox" value="Education"> Education</label>
+                                <label><input type="checkbox" value="Entertainment"> Entertainment</label>
+                                <label><input type="checkbox" value="Music"> Music</label>
+                                <label><input type="checkbox" value="Technology"> Technology</label>
+                                <label><input type="checkbox" value="Sports"> Sports</label>
+                                <label><input type="checkbox" value="News"> News & Politics</label>
+                                <label><input type="checkbox" value="Comedy"> Comedy</label>
+                                <label><input type="checkbox" value="Film"> Film & Animation</label>
+                                <label><input type="checkbox" value="Beauty"> Beauty & Fashion</label>
+                                <label><input type="checkbox" value="Travel"> Travel & Events</label>
+                                <label><input type="checkbox" value="Science"> Science & Tech</label>
+                            </div>
+                            <div class="custom-category-input">
+                                <button id="add-custom-category-btn" class="btn-small">
+                                    <i class="fas fa-plus"></i> Add Custom Category
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Last Upload Date Range -->
+                <div class="filter-group date-range-group">
+                    <label>
+                        <i class="fas fa-calendar"></i> Last Upload Date Range
+                    </label>
+                    <div class="date-range-inputs">
+                        <div class="date-input-wrapper">
+                            <label for="from-date" class="date-label">From</label>
+                            <input type="date" id="from-date" class="filter-input">
+                        </div>
+                        <div class="date-input-wrapper">
+                            <label for="to-date" class="date-label">To</label>
+                            <input type="date" id="to-date" class="filter-input">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Table Actions -->
+        <div class="table-actions">
+            <button id="export-csv-btn" class="btn btn-success">
+                <i class="fas fa-download"></i> Export Selected as CSV
+            </button>
+        </div>
+
+        <!-- Channels Table -->
+        <div class="table-container">
+            <table id="channels-table" class="channels-table">
+                <thead>
+                    <tr>
+                        <th class="checkbox-col">
+                            <input type="checkbox" id="select-all-checkbox">
+                        </th>
+                        <th class="sortable" data-column="name">
+                            Name
+                            <i class="fas fa-sort sort-icon"></i>
+                        </th>
+                        <th>Link</th>
+                        <th class="sortable" data-column="description">
+                            Description
+                            <i class="fas fa-sort sort-icon"></i>
+                        </th>
+                        <th class="sortable" data-column="subscribers">
+                            Subscribers
+                            <i class="fas fa-sort sort-icon"></i>
+                        </th>
+                        <th class="sortable" data-column="country">
+                            Country
+                            <i class="fas fa-sort sort-icon"></i>
+                        </th>
+                        <th class="sortable" data-column="category">
+                            Category
+                            <i class="fas fa-sort sort-icon"></i>
+                        </th>
+                        <th class="sortable" data-column="lastVideo">
+                            Last Video
+                            <i class="fas fa-sort sort-icon"></i>
+                        </th>
+                        <th class="sortable" data-column="lastUpload">
+                            Last Upload
+                            <i class="fas fa-sort sort-icon"></i>
+                        </th>
+                        <th class="sortable" data-column="daysSince">
+                            Days Since
+                            <i class="fas fa-sort sort-icon"></i>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="table-body">
+                    <!-- Rows will be populated dynamically -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
